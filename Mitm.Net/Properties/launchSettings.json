@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Mitm.Net": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
