@@ -3,10 +3,11 @@ using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography;
 using System.Text.Json;
+using System.Runtime.CompilerServices;
 
 namespace Mitm.Net;
 
-internal static class MitmCertificateStore
+public static class MitmCertificateStore
 {
     private const string CACommonName = "localhost";
     private const string CAOrgName = "Mitm.Net CA";
@@ -35,7 +36,11 @@ internal static class MitmCertificateStore
         s_caRsaParameters = JsonSerializer.Deserialize<RSAParameters>(File.ReadAllText(caInfoPath), s_jsonOptions);
         s_caRsa = RSA.Create(s_caRsaParameters);
         s_caPublicKeyDer = GetPublicKeyDer(s_caRsaParameters);
+    }
 
+    [ModuleInitializer]
+    internal static void InitCACert()
+    {
         if (!File.Exists("MitmCA.pfx"))
         {
             string certPem = GenerateCertificate(CACommonName, s_caPublicKeyDer, s_caRsa, ca: true);
